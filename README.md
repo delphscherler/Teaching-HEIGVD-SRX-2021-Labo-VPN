@@ -30,8 +30,8 @@ Dans ce travail de laboratoire, vous allez configurer des routeurs Cisco émulé
 -	Capture Sniffer avec filtres précis sur la communication à épier
 -	Activation du mode « debug » pour certaines fonctions du routeur
 -	Observation des protocoles IPSec
- 
- 
+
+
 ## Matériel
 
 Le logiciel d'émulation à utiliser c'est eve-ng (vous l'avez déjà employé). Vous trouverez ici un [guide très condensé](files/Manuel_EVE-NG.pdf) pour l'utilisation et l'installation de eve-ng.
@@ -106,7 +106,7 @@ Un « protocol » différent de `up` indique la plupart du temps que l’interfa
 
 ---
 
-**Réponse :**  
+**Réponse :**  Nous n'avons pas rencontré de problèmes, toutes les interfaces voulues sont actives.
 
 ---
 
@@ -143,7 +143,7 @@ Pour votre topologie il est utile de contrôler la connectivité entre :
 
 ---
 
-**Réponse :**  
+**Réponse :**  Tous les pings ci-dessus sont passés.
 
 ---
 
@@ -161,12 +161,13 @@ Pour déclencher et pratiquer les captures vous allez « pinger » votre routeur
 -	Une trace sniffer (Wireshark) à la sortie du routeur R2 vers Internet. Si vous ne savez pas utiliser Wireshark avec eve-ng, référez-vous au document explicatif eve-ng. Le filtre de **capture** (attention, c'est un filtre de **capture** et pas un filtre d'affichage) suivant peut vous aider avec votre capture : `ip host 193.100.100.1`. 
 -	Les messages de R1 avec `debug ip icmp`.
 
-
-**Question 3: Montrez vous captures**
+**Question 3: Montrez vos captures**
 
 ---
 
-**Screenshots :**  
+**Screenshots :**  ![R2_capture_wireshark](images/R2_capture_wireshark.PNG)
+
+![R1_debug_ip_icmp](images/R1_debug_ip_icmp.PNG)
 
 ---
 
@@ -188,16 +189,15 @@ Nous allons établir un VPN IKE/IPsec entre le réseau de votre « loopback 1 »
 
 Sur le routeur R1 nous activons un « proposal » IKE. Il s’agit de la configuration utilisée pour la phase 1 du protocole IKE. Le « proposal » utilise les éléments suivants :
 
-| Element          | Value                                                                                                        |
-|------------------|----------------------------------------------------------------------------------------------------------------------|
-| Encryption       | AES 256 bits    
-| Signature        | Basée sur SHA-1                                                                                                      |
-| Authentification | Preshared Key                                                                                                        |
-| Diffie-Hellman   | avec des nombres premiers sur 1536 bits                                                                              |
-| Renouvellement   | des SA de la Phase I toutes les 30 minutes                                                                           |
-| Keepalive        | toutes les 30 secondes avec 3 « retry »                                                                              |
+| Element          | Value                                                        |
+| ---------------- | ------------------------------------------------------------ |
+| Encryption       | AES 256 bits                                                 |
+| Signature        | Basée sur SHA-1                                              |
+| Authentification | Preshared Key                                                |
+| Diffie-Hellman   | avec des nombres premiers sur 1536 bits                      |
+| Renouvellement   | des SA de la Phase I toutes les 30 minutes                   |
+| Keepalive        | toutes les 30 secondes avec 3 « retry »                      |
 | Preshared-Key    | pour l’IP du distant avec le texte « cisco-1 », Notez que dans la réalité nous utiliserions un texte plus compliqué. |
-
 
 Les commandes de configurations sur R1 ressembleront à ce qui suit :
 
@@ -237,16 +237,17 @@ Vous pouvez consulter l’état de votre configuration IKE avec les commandes su
 
 ---
 
-**Réponse :**  
+**Réponse :**  Cette commande affiche les détails des policies que nous avons configurées sur les routeurs. TODO
+
+À noter que MD5 sur le router 2 n'est pas recommandé car obsolète.
 
 ---
-
 
 **Question 5: Utilisez la commande `show crypto isakmp key` et faites part de vos remarques :**
 
 ---
 
-**Réponse :**  
+**Réponse :**  Cette commande nous montre la clé partagée entre les deux routeurs. TODO
 
 ---
 
@@ -339,7 +340,9 @@ Pensez à démarrer votre sniffer sur la sortie du routeur R2 vers internet avan
 
 ---
 
-**Réponse :**  
+**Réponse :**  Sur le debugger du routeur 1 nous voyons les ICMP echo reply, alors que sur le routeur 2 on ne voit rien.
+
+Quand on regarde dans Wireshark, on trouve aucune trace de paquets ICMP. Par contre nous voyons des paquets ISAKMP échangés entre les deux routeurs.
 
 ---
 
@@ -347,7 +350,9 @@ Pensez à démarrer votre sniffer sur la sortie du routeur R2 vers internet avan
 
 ---
 
-**Réponse :**  
+**Réponse :**  lifetime = durée de vie globale : contrôle le moment où un tunnel doit être rétabli.
+
+idle timer = délai d'inactivé : permet de supprimer les SA associés à des pairs inactifs avant l'expiration de la durée de vie globale. Si les idle timers ne sont pas configurés, seuls les lifetime sont appliqués.
 
 ---
 
@@ -356,21 +361,25 @@ Pensez à démarrer votre sniffer sur la sortie du routeur R2 vers internet avan
 
 En vous appuyant sur les notions vues en cours et vos observations en laboratoire, essayez de répondre aux questions. À chaque fois, expliquez comment vous avez fait pour déterminer la réponse exacte (capture, config, théorie, ou autre).
 
-
 **Question 8: Déterminez quel(s) type(s) de protocole VPN a (ont) été mis en œuvre (IKE, ESP, AH, ou autre).**
 
 ---
 
-**Réponse :**  
+**Réponse :**  Nous avons utilisé les protocoles IKE et ESP.
+
+![IKE](images/IKE.PNG)
+
+![ESP](images/ESP.PNG)
 
 ---
-
 
 **Question 9: Expliquez si c’est un mode tunnel ou transport.**
 
 ---
 
-**Réponse :**  
+**Réponse :**  Nous avons configuré le transform set STRONG, qui est en mode tunnel.
+
+![tunnel](images/tunnel.PNG)
 
 ---
 
