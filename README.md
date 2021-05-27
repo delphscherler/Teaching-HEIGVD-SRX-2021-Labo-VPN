@@ -90,7 +90,7 @@ Vérifier que le projet a été importé correctement. Pour cela, nous allons co
 
 ### A faire...
 
-- Contrôlez l’état de toutes vos interfaces dans les deux routeurs et le routeur qui simule l'Internet - Pour contrôler l’état de vos interfaces (dans R1, par exmeple) les commandes suivantes sont utiles :
+- Contrôlez l’état de toutes vos interfaces dans les deux routeurs et le routeur qui simule l'Internet - Pour contrôler l’état de vos interfaces (dans R1, par exemple) les commandes suivantes sont utiles :
 
 ```
 R1# show ip interface brief
@@ -237,9 +237,17 @@ Vous pouvez consulter l’état de votre configuration IKE avec les commandes su
 
 ---
 
-**Réponse :**  Cette commande affiche les détails des policies que nous avons configurées sur les routeurs. TODO
+**Réponse :**  Cette commande affiche les détails des policies que nous avons configurées sur les routeurs.
 
-À noter que MD5 sur le router 2 n'est pas recommandé car obsolète.
+À noter que MD5 et SHA-1 ne sont plus recommandé niveau sécurité, car obsolètes.
+
+Routeur 1 :
+
+![IKE](images/R1_ISAKMP.PNG)
+
+Routeur 2 :
+
+![IKE](images/R2_ISAKMP.PNG)
 
 ---
 
@@ -247,7 +255,15 @@ Vous pouvez consulter l’état de votre configuration IKE avec les commandes su
 
 ---
 
-**Réponse :**  Cette commande nous montre la clé partagée entre les deux routeurs. TODO
+**Réponse :**  Cette commande nous montre la clé partagée entre les deux routeurs. À noter que celle-ci n'est pas optimale niveau sécurité.
+
+Routeur 1 :
+
+![IKE](images/R1_key.PNG)
+
+Routeur 2 :
+
+![IKE](images/R2_key.PNG)
 
 ---
 
@@ -377,7 +393,7 @@ En vous appuyant sur les notions vues en cours et vos observations en laboratoir
 
 ---
 
-**Réponse :**  Nous avons configuré le transform set STRONG, qui est en mode tunnel.
+**Réponse :**  Nous avons configuré le transform set STRONG, qui est en mode tunnel, comme on le voit sur la capture d'écran suivante :
 
 ![tunnel](images/tunnel.PNG)
 
@@ -388,24 +404,26 @@ En vous appuyant sur les notions vues en cours et vos observations en laboratoir
 
 ---
 
-**Réponse :**  
+**Réponse :**  Comme vu dans la théorie, pour le mode tunnel, le paquet IP complet est chiffré, c'est-à dire l'entête IP, l'entête TCP et les données. Sur la capture ci-dessous nous voyons que l'algorithme cryptographique utilisé est AES = Advanced Encryption Standard. 
+
+![IKE](images/IKE_chiffre.PNG)
 
 ---
-
 
 **Question 11: Expliquez quelles sont les parties du paquet qui sont authentifiées. Donnez l’algorithme cryptographique correspondant.**
 
 ---
 
-**Réponse :**  
+**Réponse :**  Comme vu dans la théorie, le paquet IP complet est authentifié. On voit sur la capture ci-dessous l'algorithme pour l'authentification est Secure Hash Standard = SHA-1.
+
+![IKE](images/IKE_authentification.PNG)
 
 ---
-
 
 **Question 12: Expliquez quelles sont les parties du paquet qui sont protégées en intégrité. Donnez l’algorithme cryptographique correspondant.**
 
 ---
 
-**Réponse :**  
+**Réponse :**  Comme vu dans la théorie, le paquet original complet est protégé en intégrité. L'algorithme est comme pour l'authentification, SHA-1.
 
 ---
