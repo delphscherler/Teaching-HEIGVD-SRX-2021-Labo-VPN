@@ -406,7 +406,7 @@ En vous appuyant sur les notions vues en cours et vos observations en laboratoir
 
 **Réponse :**  Comme vu dans la théorie, pour le mode tunnel, le paquet IP complet est chiffré, c'est-à dire l'entête IP, l'entête TCP et les données. Sur la capture ci-dessous nous voyons que l'algorithme cryptographique utilisé est AES = Advanced Encryption Standard. 
 
-![IKE](images/IKE_chiffre.PNG)
+![IKE](images/IKE_chiffre.png)
 
 ---
 
@@ -416,7 +416,7 @@ En vous appuyant sur les notions vues en cours et vos observations en laboratoir
 
 **Réponse :**  Comme vu dans la théorie, le paquet IP complet est authentifié. On voit sur la capture ci-dessous l'algorithme pour l'authentification est Secure Hash Standard = SHA-1.
 
-![IKE](images/IKE_authentification.PNG)
+![IKE](images/IKE_authentification.png)
 
 ---
 
